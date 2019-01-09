@@ -13,7 +13,6 @@ import java.util.Properties;
  **/
 public class ZKApplication {
 
-
     public static void main(String[] args) {
         // 从 classpath 读取配置文件
         String resourceName = "zookeeper.properties";
@@ -31,6 +30,7 @@ public class ZKApplication {
         }
 
         if (loadConfigSuccess) {
+            // 建立会话
             String connectString = properties.getProperty("zookeeper.server1.url")
                     + ":"
                     + properties.get("zookeeper.server1.port");
