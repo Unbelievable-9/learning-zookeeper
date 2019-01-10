@@ -12,6 +12,7 @@ import java.util.Properties;
 public class ZKApplication {
 
     public static void main(String[] args) throws IOException, InterruptedException {
+
         // 从 classpath 读取配置文件
         String resourceName = "zookeeper.properties";
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -29,10 +30,16 @@ public class ZKApplication {
 
         if (loadConfigSuccess) {
             // 创建基本会话
-            ZKWatcherSample.connect(properties);
+            //ZKWatcherSample.connect(properties);
 
             // 利用 Session 创建回话
-            ZKWatcherSample.connectWithSession(properties);
+            //ZKWatcherSample.connectWithSession(properties);
+
+            // 同步创建节点
+            //ZKWatcherSample.createZNodeSynchronously(properties);
+
+            // 异步创建节点
+            ZKWatcherSample.createZNodeAsynchronously(properties);
         }
     }
 }
