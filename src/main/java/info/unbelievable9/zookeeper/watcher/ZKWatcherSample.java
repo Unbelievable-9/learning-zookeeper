@@ -186,6 +186,13 @@ public class ZKWatcherSample implements Watcher {
         Thread.sleep(Integer.MAX_VALUE);
     }
 
+    /**
+     * 同步删除节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
     public static void deleteZNodeSynchronously(Properties properties) throws IOException, InterruptedException {
         ZooKeeper zooKeeper = connect(properties);
 
@@ -205,12 +212,19 @@ public class ZKWatcherSample implements Watcher {
         }
     }
 
+    /**
+     * 异步删除节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
     public static void deleteZNodeAsynchronously(Properties properties) throws IOException, InterruptedException {
         ZooKeeper zooKeeper = connect(properties);
 
         // 异步删除节点
         zooKeeper.delete("/sheep-znode", 0, new ZKWacherVoidCallback(), "删除圈羊节点");
-        zooKeeper.delete("/horse-znode", 0 , new ZKWacherVoidCallback(), "删除大马节点");
+        zooKeeper.delete("/horse-znode", 0, new ZKWacherVoidCallback(), "删除大马节点");
 
         Thread.sleep(Integer.MAX_VALUE);
     }
