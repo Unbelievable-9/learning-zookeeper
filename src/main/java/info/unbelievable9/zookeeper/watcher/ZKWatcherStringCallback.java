@@ -1,4 +1,4 @@
-package info.unbelievable9.zookeeper;
+package info.unbelievable9.zookeeper.watcher;
 
 import org.apache.zookeeper.AsyncCallback;
 
@@ -20,12 +20,12 @@ public class ZKWatcherStringCallback implements AsyncCallback.StringCallback {
           -110 - NodeExists     节点已存在
           -112 - SessionExpired 会话过期
          */
-
         System.out.println(
                 "Process Result: [" +
                         "Result Code: " + i + ", " +
                         "Path: " + s + ", " +
                         "Context: " + o + ", " +
-                        "Real Path: " + s1 + "]");
+                        "Real Path: " + s1 + "]"
+        );
     }
 }

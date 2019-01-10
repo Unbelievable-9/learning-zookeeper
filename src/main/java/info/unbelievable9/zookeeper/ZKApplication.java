@@ -1,5 +1,7 @@
 package info.unbelievable9.zookeeper;
 
+import info.unbelievable9.zookeeper.watcher.ZKWatcherSample;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -39,7 +41,15 @@ public class ZKApplication {
             //ZKWatcherSample.createZNodeSynchronously(properties);
 
             // 异步创建节点
-            ZKWatcherSample.createZNodeAsynchronously(properties);
+            //ZKWatcherSample.createZNodeAsynchronously(properties);
+
+            // 同步删除节点
+            //ZKWatcherSample.createZNodeSynchronously(properties);
+            //ZKWatcherSample.deleteZNodeSynchronously(properties);
+
+            // 异步删除节点
+            ZKWatcherSample.createZNodeSynchronously(properties);
+            ZKWatcherSample.deleteZNodeAsynchronously(properties);
         }
     }
 }

@@ -1,4 +1,4 @@
-package info.unbelievable9.zookeeper;
+package info.unbelievable9.zookeeper.watcher;
 
 import org.apache.zookeeper.*;
 
@@ -41,7 +41,7 @@ public class ZKWatcherSample implements Watcher {
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    static ZooKeeper connect(Properties properties) throws IOException, InterruptedException {
+    public static ZooKeeper connect(Properties properties) throws IOException, InterruptedException {
         // 建立会话
         String connectString = properties.getProperty("zookeeper.server1.url")
                 + ":"
@@ -69,7 +69,7 @@ public class ZKWatcherSample implements Watcher {
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    static void connectWithSession(Properties properties) throws IOException, InterruptedException {
+    public static void connectWithSession(Properties properties) throws IOException, InterruptedException {
         String connectString = properties.getProperty("zookeeper.server1.url")
                 + ":"
                 + properties.get("zookeeper.server1.port");
@@ -104,7 +104,7 @@ public class ZKWatcherSample implements Watcher {
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    static void createZNodeSynchronously(Properties properties) throws IOException, InterruptedException {
+    public static void createZNodeSynchronously(Properties properties) throws IOException, InterruptedException {
         ZooKeeper zooKeeper = connect(properties);
 
         // 同步创建节点
@@ -129,10 +129,10 @@ public class ZKWatcherSample implements Watcher {
 
         try {
             secondPath = zooKeeper.create(
-                    "/horse-znode-sequential",
+                    "/horse-znode",
                     "I'm a big horse.".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                    CreateMode.PERSISTENT_SEQUENTIAL
+                    CreateMode.PERSISTENT
             );
         } catch (KeeperException e) {
             System.out.println("创建大马节点失败!");
@@ -145,7 +145,14 @@ public class ZKWatcherSample implements Watcher {
         }
     }
 
-    static void createZNodeAsynchronously(Properties properties) throws IOException, InterruptedException {
+    /**
+     * 异步方式创建节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    public static void createZNodeAsynchronously(Properties properties) throws IOException, InterruptedException {
         ZooKeeper zooKeeper = connect(properties);
 
         // 异步创建节点
@@ -153,7 +160,7 @@ public class ZKWatcherSample implements Watcher {
                 "/pig-znode",
                 "I may be the first pig.".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                CreateMode.EPHEMERAL,
+                CreateMode.PERSISTENT,
                 new ZKWatcherStringCallback(),
                 "My name is Peggy."
         );
@@ -162,7 +169,7 @@ public class ZKWatcherSample implements Watcher {
                 "/duck-znode",
                 "I may be the first duck".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                CreateMode.EPHEMERAL,
+                CreateMode.PERSISTENT,
                 new ZKWatcherStringCallback(),
                 "My name is Donald."
         );
@@ -171,10 +178,39 @@ public class ZKWatcherSample implements Watcher {
                 "/mouse-znode",
                 "I may be the first mouse".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                CreateMode.EPHEMERAL_SEQUENTIAL,
+                CreateMode.PERSISTENT,
                 new ZKWatcherStringCallback(),
                 "My name is Mickey."
         );
+
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+    public static void deleteZNodeSynchronously(Properties properties) throws IOException, InterruptedException {
+        ZooKeeper zooKeeper = connect(properties);
+
+        // 同步删除节点
+        try {
+            zooKeeper.delete("/sheep-znode", 0);
+        } catch (KeeperException e) {
+            System.out.println("ZooKeeper 出现异常!");
+            e.printStackTrace();
+        }
+
+        try {
+            zooKeeper.delete("/horse-znode", 0);
+        } catch (KeeperException e) {
+            System.out.println("ZooKeeper 出现异常!");
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteZNodeAsynchronously(Properties properties) throws IOException, InterruptedException {
+        ZooKeeper zooKeeper = connect(properties);
+
+        // 异步删除节点
+        zooKeeper.delete("/sheep-znode", 0, new ZKWacherVoidCallback(), "删除圈羊节点");
+        zooKeeper.delete("/horse-znode", 0 , new ZKWacherVoidCallback(), "删除大马节点");
 
         Thread.sleep(Integer.MAX_VALUE);
     }
