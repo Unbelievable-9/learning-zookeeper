@@ -8,12 +8,12 @@ import org.apache.zookeeper.AsyncCallback;
  * Description :
  * Date        : 2019-01-10
  **/
-public class ZKWacherVoidCallback implements AsyncCallback.VoidCallback {
+public class ZKWatcherVoidCallback implements AsyncCallback.VoidCallback {
 
     @Override
     public void processResult(int i, String s, Object o) {
         System.out.println(
-                "Process Result: [" +
+                "Delete znode result: [" +
                         "Result Code: " + i + ", " +
                         "Path: " + s + ", " +
                         "Context: " + o + "]"

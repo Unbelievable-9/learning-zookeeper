@@ -48,8 +48,14 @@ public class ZKApplication {
             //ZKWatcherSample.deleteZNodeSynchronously(properties);
 
             // 异步删除节点
-            ZKWatcherSample.createZNodeSynchronously(properties);
-            ZKWatcherSample.deleteZNodeAsynchronously(properties);
+            //ZKWatcherSample.createZNodeSynchronously(properties);
+            //ZKWatcherSample.deleteZNodeAsynchronously(properties);
+
+            // 同步读取子节点
+            //ZKWatcherSample.getChildrenNodeSynchronously(properties);
+
+            // 异步读取子节点
+            ZKWatcherSample.getChildrenNodeAsynchronously(properties);
         }
     }
 }

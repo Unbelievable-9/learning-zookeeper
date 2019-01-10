@@ -3,6 +3,7 @@ package info.unbelievable9.zookeeper.watcher;
 import org.apache.zookeeper.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -20,16 +21,64 @@ public class ZKWatcherSample implements Watcher {
 
     private static byte[] sessionPasswd;
 
+    private static ZooKeeper zooKeeper;
+
     @Override
     public void process(WatchedEvent watchedEvent) {
         System.out.println("收到通知: " + watchedEvent);
 
         if (watchedEvent.getState().equals(Event.KeeperState.SyncConnected)) {
-            connectedSemaphore.countDown();
-
             System.out.println("ZooKeeper 已连接");
+
+            if (watchedEvent.getType().equals(Event.EventType.None) && watchedEvent.getPath() == null) {
+                connectedSemaphore.countDown();
+            } else if (watchedEvent.getType().equals(Event.EventType.NodeChildrenChanged)) {
+                // 子节点发生变化，重新获取节点信息
+                try {
+                    List<String> childrenList = zooKeeper.getChildren("/sheep-znode", true);
+
+                    System.out.println("Re-Get children: " + childrenList);
+                } catch (KeeperException e) {
+                    System.out.println("ZooKeeper 异常!");
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    System.out.println("ZooKeeper 中断异常!");
+                    e.printStackTrace();
+                }
+            }
         } else {
             System.out.println("Zookeeper 连接失败: " + watchedEvent.getState().toString());
+        }
+    }
+
+    /**
+     * 同步添加测试节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    private static void createDemoNode(Properties properties) throws IOException, InterruptedException {
+        zooKeeper = connect(properties);
+
+        // 同步创建测试节点
+        try {
+            zooKeeper.create(
+                    "/sheep-znode",
+                    "All sheep are here.".getBytes(),
+                    ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                    CreateMode.PERSISTENT
+            );
+
+            zooKeeper.create(
+                    "/sheep-znode/baby-sheep",
+                    "Baby sheep are here.".getBytes(),
+                    ZooDefs.Ids.OPEN_ACL_UNSAFE,
+                    CreateMode.PERSISTENT
+            );
+        } catch (KeeperException e) {
+            System.out.println("ZooKeeper 异常!");
+            e.printStackTrace();
         }
     }
 
@@ -223,9 +272,50 @@ public class ZKWatcherSample implements Watcher {
         ZooKeeper zooKeeper = connect(properties);
 
         // 异步删除节点
-        zooKeeper.delete("/sheep-znode", 0, new ZKWacherVoidCallback(), "删除圈羊节点");
-        zooKeeper.delete("/horse-znode", 0, new ZKWacherVoidCallback(), "删除大马节点");
+        zooKeeper.delete("/sheep-znode", 0, new ZKWatcherVoidCallback(), "删除圈羊节点");
+        zooKeeper.delete("/horse-znode", 0, new ZKWatcherVoidCallback(), "删除大马节点");
 
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+    /**
+     * 同步读取子节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    public static void getChildrenNodeSynchronously(Properties properties) throws IOException, InterruptedException {
+        createDemoNode(properties);
+
+        // 同步读取子节点
+        try {
+            List<String> childrenList = zooKeeper.getChildren("/sheep-znode", true);
+
+            System.out.println("Get children: " + childrenList);
+        } catch (KeeperException e) {
+            System.out.println("ZooKeeper 异常!");
+            e.printStackTrace();
+        }
+
+        // 可以手动去 ZooKeeper 里在 /sheep-znode 下创建新的子节点看效果
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+    /**
+     * 异步读取子节点
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    public static void getChildrenNodeAsynchronously(Properties properties) throws IOException, InterruptedException {
+        createDemoNode(properties);
+
+        // 异步获取子节点
+        zooKeeper.getChildren("/sheep-znode", true, new ZKWatcherChildren2Callback(), "Get children node in /sheep-znode.");
+
+        // 可以手动去 ZooKeeper 里在 /sheep-znode 下创建新的子节点看效果
         Thread.sleep(Integer.MAX_VALUE);
     }
 }

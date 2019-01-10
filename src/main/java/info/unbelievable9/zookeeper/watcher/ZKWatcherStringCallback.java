@@ -21,7 +21,7 @@ public class ZKWatcherStringCallback implements AsyncCallback.StringCallback {
           -112 - SessionExpired 会话过期
          */
         System.out.println(
-                "Process Result: [" +
+                "Create znode result: [" +
                         "Result Code: " + i + ", " +
                         "Path: " + s + ", " +
                         "Context: " + o + ", " +
