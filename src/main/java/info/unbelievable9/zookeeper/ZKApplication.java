@@ -55,7 +55,13 @@ public class ZKApplication {
             //ZKWatcherSample.getChildrenNodeSynchronously(properties);
 
             // 异步读取子节点
-            ZKWatcherSample.getChildrenNodeAsynchronously(properties);
+            //ZKWatcherSample.getChildrenNodeAsynchronously(properties);
+
+            // 同步读取数据内容
+            //ZKWatcherSample.getDataSynchronously(properties);
+
+            // 异步读取数据内容
+            ZKWatcherSample.getDataAsynchronously(properties);
         }
     }
 }

@@ -1,6 +1,7 @@
 package info.unbelievable9.zookeeper.watcher;
 
 import org.apache.zookeeper.*;
+import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,6 +24,8 @@ public class ZKWatcherSample implements Watcher {
 
     private static ZooKeeper zooKeeper;
 
+    private static Stat stat = new Stat();
+
     @Override
     public void process(WatchedEvent watchedEvent) {
         System.out.println("收到通知: " + watchedEvent);
@@ -30,21 +33,34 @@ public class ZKWatcherSample implements Watcher {
         if (watchedEvent.getState().equals(Event.KeeperState.SyncConnected)) {
             System.out.println("ZooKeeper 已连接");
 
-            if (watchedEvent.getType().equals(Event.EventType.None) && watchedEvent.getPath() == null) {
-                connectedSemaphore.countDown();
-            } else if (watchedEvent.getType().equals(Event.EventType.NodeChildrenChanged)) {
-                // 子节点发生变化，重新获取节点信息
-                try {
-                    List<String> childrenList = zooKeeper.getChildren("/sheep-znode", true);
+            switch (watchedEvent.getType()) {
+                case None:
+                    if (watchedEvent.getPath() == null) {
+                        connectedSemaphore.countDown();
+                    }
+                    break;
+                case NodeChildrenChanged:
+                    // 子节点发生变化, 重新获取子节点
+                    try {
+                        List<String> childrenList = zooKeeper.getChildren(watchedEvent.getPath(), true);
 
-                    System.out.println("Re-Get children: " + childrenList);
-                } catch (KeeperException e) {
-                    System.out.println("ZooKeeper 异常!");
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    System.out.println("ZooKeeper 中断异常!");
-                    e.printStackTrace();
-                }
+                        System.out.println("Re-Get children: " + childrenList);
+                    } catch (KeeperException | InterruptedException e) {
+                        System.out.println("ZooKeeper 异常!");
+                        e.printStackTrace();
+                    }
+                    break;
+                case NodeDataChanged:
+                    // 数据内容发生变化, 重新获取数据内容
+                    try {
+                        String data = new String(zooKeeper.getData(watchedEvent.getPath(), true, stat));
+
+                        System.out.println("Re-Get data: " + data);
+                        System.out.println(stat.getCzxid() + ", " + stat.getMzxid() + ", " + stat.getVersion());
+                    } catch (KeeperException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    break;
             }
         } else {
             System.out.println("Zookeeper 连接失败: " + watchedEvent.getState().toString());
@@ -74,7 +90,7 @@ public class ZKWatcherSample implements Watcher {
                     "/sheep-znode/baby-sheep",
                     "Baby sheep are here.".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
-                    CreateMode.PERSISTENT
+                    CreateMode.EPHEMERAL
             );
         } catch (KeeperException e) {
             System.out.println("ZooKeeper 异常!");
@@ -316,6 +332,44 @@ public class ZKWatcherSample implements Watcher {
         zooKeeper.getChildren("/sheep-znode", true, new ZKWatcherChildren2Callback(), "Get children node in /sheep-znode.");
 
         // 可以手动去 ZooKeeper 里在 /sheep-znode 下创建新的子节点看效果
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+    /**
+     * 同步读取数据内容
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    public static void getDataSynchronously(Properties properties) throws IOException, InterruptedException {
+        createDemoNode(properties);
+
+        try {
+            String data = new String(zooKeeper.getData("/sheep-znode/baby-sheep", true, stat));
+
+            System.out.println("Get data: " + data);
+            System.out.print(stat.getCzxid() + ", " + stat.getMzxid() + ", " + stat.getVersion());
+        } catch (KeeperException e) {
+            System.out.println("Zookeeper 异常!");
+            e.printStackTrace();
+        }
+
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+    /**
+     * 异步读取数据内容
+     *
+     * @param properties 配置信息
+     * @throws IOException          IO异常
+     * @throws InterruptedException 中断异常
+     */
+    public static void getDataAsynchronously(Properties properties) throws IOException, InterruptedException {
+        createDemoNode(properties);
+
+        zooKeeper.getData("/sheep-znode/baby-sheep", true, new ZKWatcherDataCallback(), null);
+
         Thread.sleep(Integer.MAX_VALUE);
     }
 }
