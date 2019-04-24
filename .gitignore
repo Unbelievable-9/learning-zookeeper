@@ -29,3 +29,6 @@ target/
 
 ### Maven
 dependency-reduced-pom.xml
+
+### JENV
+.java-version
