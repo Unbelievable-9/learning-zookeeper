@@ -6,7 +6,6 @@ import info.unbelievable9.zookeeper.watcher.ZkWatcherStringCallback;
 import info.unbelievable9.zookeeper.watcher.ZkWatcherVoidCallback;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.testng.Assert;
@@ -92,7 +91,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
      * @throws InterruptedException 中断异常
      */
     @Test(priority = 2)
-    public void getChildrenNodeAsynchronously() throws InterruptedException, KeeperException {
+    public void getChildrenNodeAsynchronously() throws InterruptedException {
         Assert.assertNotNull(zooKeeper);
 
         zooKeeper.create(
