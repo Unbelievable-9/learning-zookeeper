@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="TestAll">
+
+    <test name="connection" enabled="false">
+        <classes>
+            <class name="info.unbelievable9.zookeeper.ZkConnectionTest"/>
+        </classes>
+    </test>
+    
+    <test name="node-operation" enabled="true">
+        <groups>
+            <run>
+                <include name="node-operation-async"/>
+            </run>
+        </groups>
+        
+        <classes>
+            <class name="info.unbelievable9.zookeeper.ZkNodeSyncOperationTest"/>
+            <class name="info.unbelievable9.zookeeper.ZkNodeAsyncOperationTest"/>
+        </classes>
+    </test>
+
+</suite>
