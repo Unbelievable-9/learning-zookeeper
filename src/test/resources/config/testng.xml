@@ -3,7 +3,7 @@
 
     <test name="connection" enabled="false">
         <classes>
-            <class name="info.unbelievable9.zookeeper.ZkConnectionTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkConnectionTest"/>
         </classes>
     </test>
     
@@ -15,8 +15,8 @@
         </groups>
         
         <classes>
-            <class name="info.unbelievable9.zookeeper.ZkNodeSyncOperationTest"/>
-            <class name="info.unbelievable9.zookeeper.ZkNodeAsyncOperationTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkNodeSyncOperationTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkNodeAsyncOperationTest"/>
         </classes>
     </test>
 

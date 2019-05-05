@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class ZkRootTest {
 
-    Properties properties;
+    protected Properties properties;
 
     @BeforeTest
     public void beforeTest() throws IOException, InterruptedException {

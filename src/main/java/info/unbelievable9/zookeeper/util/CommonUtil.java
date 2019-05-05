@@ -1,6 +1,6 @@
 package info.unbelievable9.zookeeper.util;
 
-import info.unbelievable9.zookeeper.watcher.ZkWatcherSampleCallback;
+import info.unbelievable9.zookeeper.original.watcher.ZkWatcher;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.ZooKeeper;
 
@@ -67,9 +67,7 @@ public class CommonUtil {
             ZooKeeper zooKeeper = new ZooKeeper(
                     connectString,
                     5000,
-                    new ZkWatcherSampleCallback());
-
-            ZkWatcherSampleCallback.setZooKeeper(zooKeeper);
+                    new ZkWatcher());
 
             getConnectedSemaphore().await();
 

@@ -1,7 +1,8 @@
-package info.unbelievable9.zookeeper;
+package info.unbelievable9.zookeeper.original;
 
+import info.unbelievable9.zookeeper.ZkRootTest;
+import info.unbelievable9.zookeeper.original.watcher.ZkWatcher;
 import info.unbelievable9.zookeeper.util.CommonUtil;
-import info.unbelievable9.zookeeper.watcher.ZkWatcherSampleCallback;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.ZooKeeper;
 import org.testng.Assert;
@@ -42,9 +43,7 @@ public class ZkConnectionTest extends ZkRootTest {
         ZooKeeper zooKeeper = new ZooKeeper(
                 connectString,
                 5000,
-                new ZkWatcherSampleCallback());
-
-        ZkWatcherSampleCallback.setZooKeeper(zooKeeper);
+                new ZkWatcher());
 
         logger.info("连接状态: " + zooKeeper.getState());
 
@@ -78,11 +77,9 @@ public class ZkConnectionTest extends ZkRootTest {
         ZooKeeper zooKeeper = new ZooKeeper(
                 connectString,
                 5000,
-                new ZkWatcherSampleCallback(),
+                new ZkWatcher(),
                 1L,
                 "test".getBytes());
-
-        ZkWatcherSampleCallback.setZooKeeper(zooKeeper);
 
         logger.info("连接状态: " + zooKeeper.getState());
 
@@ -98,11 +95,9 @@ public class ZkConnectionTest extends ZkRootTest {
         zooKeeper = new ZooKeeper(
                 connectString,
                 5000,
-                new ZkWatcherSampleCallback(),
+                new ZkWatcher(),
                 sessionId,
                 sessionPasswd);
-
-        ZkWatcherSampleCallback.setZooKeeper(zooKeeper);
 
         logger.info("连接状态: " + zooKeeper.getState());
 
