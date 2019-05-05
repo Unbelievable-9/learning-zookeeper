@@ -110,6 +110,8 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         zooKeeper.getChildren("/pig-znode", true, new ZkWatcherChildren2Callback(), "异步获取 /pig-znode 下子节点列表");
 
         CommonUtil.getConnectedSemaphore().await();
+
+        logger.info("异步读取子节点列表完成");
     }
 
     /**

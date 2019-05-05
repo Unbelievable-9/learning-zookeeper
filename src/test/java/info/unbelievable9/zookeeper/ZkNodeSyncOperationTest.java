@@ -110,7 +110,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
                     CreateMode.PERSISTENT);
 
             if (childPath != null) {
-                logger.info("创建子节点成功");
+                logger.info("同步创建羊崽子节点成功: " + childPath);
             }
 
             List<String> childrenList = zooKeeper.getChildren("/sheep-znode", true);

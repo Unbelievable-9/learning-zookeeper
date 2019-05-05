@@ -33,7 +33,7 @@ public class ZkWatcherSampleCallback implements Watcher {
         logger.info("收到通知: " + watchedEvent);
 
         if (watchedEvent.getState().equals(Event.KeeperState.SyncConnected)) {
-            logger.info("ZooKeeper 已连接");
+            logger.info("ZooKeeper 已同步连接");
 
             switch (watchedEvent.getType()) {
                 case None:
@@ -46,7 +46,7 @@ public class ZkWatcherSampleCallback implements Watcher {
                     try {
                         List<String> childrenList = zooKeeper.getChildren(watchedEvent.getPath(), true);
 
-                        logger.info("Re-Get children: " + childrenList);
+                        logger.info("重新获取子节点 " + watchedEvent.getPath() +  " 信息: " + childrenList);
                     } catch (KeeperException | InterruptedException e) {
                         logger.info("ZooKeeper 异常!");
                         e.printStackTrace();
