@@ -1,22 +1,28 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="TestAll">
 
-    <test name="connection" enabled="false">
+    <test name="session" enabled="false">
         <classes>
-            <class name="info.unbelievable9.zookeeper.original.ZkConnectionTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkSessionTest"/>
         </classes>
     </test>
-    
-    <test name="node-operation" enabled="true">
+
+    <test name="sync-async" enabled="false">
         <groups>
             <run>
                 <include name="node-operation-async"/>
             </run>
         </groups>
-        
+
         <classes>
-            <class name="info.unbelievable9.zookeeper.original.ZkNodeSyncOperationTest"/>
-            <class name="info.unbelievable9.zookeeper.original.ZkNodeAsyncOperationTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkSyncTest"/>
+            <class name="info.unbelievable9.zookeeper.original.ZkAsyncTest"/>
+        </classes>
+    </test>
+
+    <test name="acl">
+        <classes>
+            <class name="info.unbelievable9.zookeeper.original.ZkAclTest"/>
         </classes>
     </test>
 
