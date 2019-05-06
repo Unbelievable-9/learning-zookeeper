@@ -160,7 +160,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
     }
 
     /**
-     * 异步删除节点
+     * 异步删除节点并检测节点是否删除成功
      *
      * @throws InterruptedException 中断异常
      */
@@ -172,13 +172,26 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步删除节点开始");
 
-        zooKeeper.delete("/pig-znode/baby-pig", 0, new ZkVoidCallback(), "删除小 Peggy 节点");
-        zooKeeper.delete("/pig-znode", 1, new ZkVoidCallback(), "删除 Peggy 节点");
-        zooKeeper.delete("/duck-znode", 0, new ZkVoidCallback(), "删除 Donald 节点");
-        zooKeeper.delete("/mouse-znode", 0, new ZkVoidCallback(), "删除 Mickey 节点");
+        zooKeeper.delete("/pig-znode/baby-pig", 0, new ZkVoidCallback(), "删除 /pig-znode/baby-pig 节点");
+        zooKeeper.delete("/pig-znode", 1, new ZkVoidCallback(), "删除 /pig-znode 节点");
+        zooKeeper.delete("/duck-znode", 0, new ZkVoidCallback(), "删除 /duck-znode 节点");
+        zooKeeper.delete("/mouse-znode", 0, new ZkVoidCallback(), "删除 /mouse-znode 节点");
 
         CommonUtil.getConnectedSemaphore().await();
 
         logger.info("异步删除节点结束");
+
+        CommonUtil.setConnectedSemaphore(4);
+
+        logger.info("异步检测节点是否删除成功开始");
+
+        zooKeeper.exists("/pig-znode/baby-pig", true, new ZkStatCallback(), "/pig-znode/baby-pig");
+        zooKeeper.exists("/pig-znode", true, new ZkStatCallback(), "/pig-znode");
+        zooKeeper.exists("/duck-znode", true, new ZkStatCallback(), "/duck-znode");
+        zooKeeper.exists("/mouse-znode", true, new ZkStatCallback(), "/mouse-znode");
+
+        CommonUtil.getConnectedSemaphore().await();
+
+        logger.info("异步检测节点是否删除成功结束");
     }
 }

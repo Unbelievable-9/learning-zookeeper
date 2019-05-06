@@ -22,6 +22,12 @@ public class ZkStatCallback implements AsyncCallback.StatCallback {
                     "version:" + stat.getVersion() + "]");
 
             CommonUtil.getConnectedSemaphore().countDown();
+        } else if (i == -101) {
+            if (stat == null) {
+                logger.info("节点 " + o.toString() + " 已删除");
+            }
+
+            CommonUtil.getConnectedSemaphore().countDown();
         }
     }
 }

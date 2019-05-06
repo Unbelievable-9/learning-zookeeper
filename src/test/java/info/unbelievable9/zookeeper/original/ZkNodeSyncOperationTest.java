@@ -164,15 +164,24 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
     }
 
     /**
-     * 同步删除节点
+     * 同步删除节点并检测节点是否删除成功
      */
     @Test(priority = 4)
     public void deleteZNodeSynchronously() {
         Assert.assertNotNull(zooKeeper);
 
+        Stat stat;
+
         try {
             zooKeeper.delete("/sheep-znode/baby-ship", 0);
-            logger.info("同步删除小圈羊节点成功");
+
+            stat = zooKeeper.exists("/sheep-znode/baby-ship", true);
+
+            if (stat == null) {
+                logger.info("同步删除小圈羊节点成功");
+            } else {
+                logger.warn("同步删除小圈羊节点失败");
+            }
         } catch (KeeperException | InterruptedException e) {
             logger.error("ZooKeeper 异常!");
             e.printStackTrace();
@@ -180,7 +189,14 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             zooKeeper.delete("/sheep-znode", 1);
-            logger.info("同步删除圈羊节点成功");
+
+            stat = zooKeeper.exists("/sheep-znode", true);
+
+            if (stat == null) {
+                logger.info("同步删除圈羊节点成功");
+            } else {
+                logger.error("同步删除圈羊节点失败");
+            }
         } catch (KeeperException | InterruptedException e) {
             logger.error("ZooKeeper 异常!");
             e.printStackTrace();
@@ -188,7 +204,15 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             zooKeeper.delete("/horse-znode", 0);
-            logger.info("同步删除大马节点成功");
+
+            stat = zooKeeper.exists("/horse-znode", true);
+
+            if (stat == null) {
+                logger.info("同步删除大马节点成功");
+            } else {
+                logger.error("同步删除大马节点失败");
+            }
+
         } catch (KeeperException | InterruptedException e) {
             logger.error("ZooKeeper 异常!");
             e.printStackTrace();
