@@ -18,12 +18,12 @@ public class ZkWatcher implements Watcher {
     @Override
     public void process(WatchedEvent watchedEvent) {
         if (watchedEvent.getState().equals(Event.KeeperState.SyncConnected)) {
-            logger.info("ZooKeeper 已连接");
-
             switch (watchedEvent.getType()) {
                 case None:
                     if (watchedEvent.getPath() == null) {
                         CommonUtil.getConnectedSemaphore().countDown();
+
+                        logger.info("Watcher 回调");
                     }
 
                     break;

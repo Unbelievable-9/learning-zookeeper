@@ -1,10 +1,7 @@
 package info.unbelievable9.zookeeper.original;
 
 import info.unbelievable9.zookeeper.ZkRootTest;
-import info.unbelievable9.zookeeper.original.callback.ZkChildren2Callback;
-import info.unbelievable9.zookeeper.original.callback.ZkDataCallback;
-import info.unbelievable9.zookeeper.original.callback.ZkStringCallback;
-import info.unbelievable9.zookeeper.original.callback.ZkVoidCallback;
+import info.unbelievable9.zookeeper.original.callback.*;
 import info.unbelievable9.zookeeper.util.CommonUtil;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.CreateMode;
@@ -140,6 +137,26 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         CommonUtil.getConnectedSemaphore().await();
 
         logger.info("异步读取节点信息结束");
+
+        logger.info("异步更新节点信息开始");
+
+        CommonUtil.refreshConnectedSemaphore();
+
+        zooKeeper.setData("/pig-znode", "Now my name is George.".getBytes(), -1, new ZkStatCallback(), "异步更新 /pig-znode 节点信息");
+
+        CommonUtil.getConnectedSemaphore().await();
+
+        logger.info("异步更新节点信息结束");
+
+        CommonUtil.refreshConnectedSemaphore();
+
+        logger.info("异步读取节点信息开始");
+
+        zooKeeper.getData("/pig-znode", true, new ZkDataCallback(), "异步读取 /pig-znode 节点信息");
+
+        CommonUtil.getConnectedSemaphore().await();
+
+        logger.info("异步读取节点信息结束");
     }
 
     /**
@@ -156,7 +173,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         logger.info("异步删除节点开始");
 
         zooKeeper.delete("/pig-znode/baby-pig", 0, new ZkVoidCallback(), "删除小 Peggy 节点");
-        zooKeeper.delete("/pig-znode", 0, new ZkVoidCallback(), "删除 Peggy 节点");
+        zooKeeper.delete("/pig-znode", 1, new ZkVoidCallback(), "删除 Peggy 节点");
         zooKeeper.delete("/duck-znode", 0, new ZkVoidCallback(), "删除 Donald 节点");
         zooKeeper.delete("/mouse-znode", 0, new ZkVoidCallback(), "删除 Mickey 节点");
 

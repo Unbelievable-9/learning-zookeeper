@@ -141,8 +141,16 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
                     "mzxid:" + stat.getMzxid() + ", " +
                     "version:" + stat.getVersion() + "]");
 
+            // 无原子性要求时，version 使用 -1 可对数据最新版本进行更新
+            stat = zooKeeper.setData("/sheep-znode", "I'm now Jack Zhao.".getBytes(), -1);
+
+            logger.info("更新后节点详情: [" +
+                    "czxid:" + stat.getCzxid() + ", " +
+                    "mzxid:" + stat.getMzxid() + ", " +
+                    "version:" + stat.getVersion() + "]");
+
             stat = new Stat();
-            data = zooKeeper.getData("/horse-znode", true, stat);
+            data = zooKeeper.getData("/sheep-znode", true, stat);
 
             logger.info("节点信息: " +  new String(data));
             logger.info("节点详情: [" +
@@ -171,7 +179,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
         }
 
         try {
-            zooKeeper.delete("/sheep-znode", 0);
+            zooKeeper.delete("/sheep-znode", 1);
             logger.info("同步删除圈羊节点成功");
         } catch (KeeperException | InterruptedException e) {
             logger.error("ZooKeeper 异常!");

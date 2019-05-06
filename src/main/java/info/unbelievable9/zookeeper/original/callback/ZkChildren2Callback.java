@@ -19,7 +19,7 @@ public class ZkChildren2Callback implements AsyncCallback.Children2Callback {
     public void processResult(int i, String s, Object o, List<String> list, Stat stat) {
         if (i == 0) {
             logger.info(
-                    "获取子节点列表详情: [" +
+                    "异步获取子节点列表详情: [" +
                             "Result Code: " + i + ", " +
                             "Path: " + s + ", " +
                             "Context: " + o + ", " +
