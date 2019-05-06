@@ -21,7 +21,7 @@ public class CommonUtil {
     private static CountDownLatch connectedSemaphore;
 
     /**
-     * 获取 Zookeeper配置文件
+     * 获取 ZooKeeper配置文件
      *
      * @return 配置问文件对象
      */
@@ -48,13 +48,13 @@ public class CommonUtil {
     }
 
     /**
-     * 获取 Zookeeper 对象
+     * 获取 ZooKeeper 对象
      *
      * @return ZooKeeper 对象
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    public static ZooKeeper getZookeeper() throws IOException, InterruptedException {
+    public static ZooKeeper getZooKeeper() throws IOException, InterruptedException {
         Properties properties = getProperties();
 
         if (properties != null) {
