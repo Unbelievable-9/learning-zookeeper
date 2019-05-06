@@ -23,9 +23,15 @@ import java.util.List;
  * @date : 2019-04-24
  */
 @Test(groups = "node-operation-sync")
-public class ZkNodeSyncOperationTest extends ZkRootTest {
+public class ZkSyncTest extends ZkRootTest {
 
-    private static final Logger logger = Logger.getLogger(ZkNodeSyncOperationTest.class);
+    private static final Logger logger = Logger.getLogger(ZkSyncTest.class);
+
+    private static final String SHEEP_PATH = "/sheep-znode";
+
+    private static final String HORSE_PATH = "/horse-znode";
+
+    private static final String BABY_SHIP_PATH = "/sheep-znode/baby-sheep-znode";
 
     private ZooKeeper zooKeeper;
 
@@ -34,7 +40,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
     public void beforeTest() throws IOException, InterruptedException {
         super.beforeTest();
 
-        zooKeeper = CommonUtil.getZookeeper();
+        zooKeeper = CommonUtil.getZooKeeper();
     }
 
     @AfterTest
@@ -60,7 +66,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             firstPath = zooKeeper.create(
-                    "/sheep-znode",
+                    SHEEP_PATH,
                     "I'm a sheep with circle.".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
                     CreateMode.PERSISTENT);
@@ -76,7 +82,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             secondPath = zooKeeper.create(
-                    "/horse-znode",
+                    HORSE_PATH,
                     "I'm a big horse.".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
                     CreateMode.PERSISTENT
@@ -93,7 +99,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             childPath = zooKeeper.create(
-                    "/sheep-znode/baby-ship",
+                    BABY_SHIP_PATH,
                     "Baby ship is here.".getBytes(),
                     ZooDefs.Ids.OPEN_ACL_UNSAFE,
                     CreateMode.PERSISTENT);
@@ -116,8 +122,8 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
         Assert.assertNotNull(zooKeeper);
 
         try {
-            List<String> childrenList = zooKeeper.getChildren("/sheep-znode", true);
-            logger.info("同步获得子节点列表: " + childrenList);
+            List<String> childrenList = zooKeeper.getChildren(SHEEP_PATH, true);
+            logger.info("同步获取 " + SHEEP_PATH + " 子节点列表: " + childrenList);
         } catch (KeeperException | InterruptedException e) {
             logger.error("ZooKeeper 异常!");
             e.printStackTrace();
@@ -133,7 +139,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
 
         try {
             Stat stat = new Stat();
-            byte[] data = zooKeeper.getData("/sheep-znode", true, stat);
+            byte[] data = zooKeeper.getData(SHEEP_PATH, true, stat);
 
             logger.info("节点信息: " +  new String(data));
             logger.info("节点详情: [" +
@@ -142,7 +148,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
                     "version:" + stat.getVersion() + "]");
 
             // 无原子性要求时，version 使用 -1 可对数据最新版本进行更新
-            stat = zooKeeper.setData("/sheep-znode", "I'm now Jack Zhao.".getBytes(), -1);
+            stat = zooKeeper.setData(SHEEP_PATH, "I'm now Jack Zhao.".getBytes(), -1);
 
             logger.info("更新后节点详情: [" +
                     "czxid:" + stat.getCzxid() + ", " +
@@ -150,7 +156,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
                     "version:" + stat.getVersion() + "]");
 
             stat = new Stat();
-            data = zooKeeper.getData("/sheep-znode", true, stat);
+            data = zooKeeper.getData(SHEEP_PATH, true, stat);
 
             logger.info("节点信息: " +  new String(data));
             logger.info("节点详情: [" +
@@ -158,7 +164,7 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
                     "mzxid:" + stat.getMzxid() + ", " +
                     "version:" + stat.getVersion() + "]");
         } catch (InterruptedException | KeeperException e) {
-            logger.error("Zookeeper 异常!");
+            logger.error("ZooKeeper 异常!");
             e.printStackTrace();
         }
     }
@@ -173,9 +179,9 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
         Stat stat;
 
         try {
-            zooKeeper.delete("/sheep-znode/baby-ship", 0);
+            zooKeeper.delete(BABY_SHIP_PATH, 0);
 
-            stat = zooKeeper.exists("/sheep-znode/baby-ship", true);
+            stat = zooKeeper.exists(BABY_SHIP_PATH, true);
 
             if (stat == null) {
                 logger.info("同步删除小圈羊节点成功");
@@ -188,9 +194,9 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
         }
 
         try {
-            zooKeeper.delete("/sheep-znode", 1);
+            zooKeeper.delete(SHEEP_PATH, 1);
 
-            stat = zooKeeper.exists("/sheep-znode", true);
+            stat = zooKeeper.exists(SHEEP_PATH, true);
 
             if (stat == null) {
                 logger.info("同步删除圈羊节点成功");
@@ -203,9 +209,9 @@ public class ZkNodeSyncOperationTest extends ZkRootTest {
         }
 
         try {
-            zooKeeper.delete("/horse-znode", 0);
+            zooKeeper.delete(HORSE_PATH, 0);
 
-            stat = zooKeeper.exists("/horse-znode", true);
+            stat = zooKeeper.exists(HORSE_PATH, true);
 
             if (stat == null) {
                 logger.info("同步删除大马节点成功");

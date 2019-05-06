@@ -21,9 +21,17 @@ import java.io.IOException;
  * @date : 2019-04-24
  */
 @Test(groups = "node-operation-async")
-public class ZkNodeAsyncOperationTest extends ZkRootTest {
+public class ZkAsyncTest extends ZkRootTest {
 
-    private static final Logger logger = Logger.getLogger(ZkNodeAsyncOperationTest.class);
+    private static final Logger logger = Logger.getLogger(ZkAsyncTest.class);
+
+    private static final String PIG_PATH = "/pig-znode";
+
+    private static final String DUCK_PATH = "/duck-znode";
+
+    private static final String MOUSE_PATH = "/mouse-znode";
+
+    private static final String BABY_PIG_PATH = "/pig-znode/bay-pig-znode";
 
     private ZooKeeper zooKeeper;
 
@@ -32,7 +40,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
     public void beforeTest() throws IOException, InterruptedException {
         super.beforeTest();
 
-        zooKeeper = CommonUtil.getZookeeper();
+        zooKeeper = CommonUtil.getZooKeeper();
     }
 
     @AfterTest
@@ -59,7 +67,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         logger.info("异步创建节点开始");
 
         zooKeeper.create(
-                "/pig-znode",
+                PIG_PATH,
                 "I may be the first pig.".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT,
@@ -68,7 +76,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         );
 
         zooKeeper.create(
-                "/duck-znode",
+                DUCK_PATH,
                 "I may be the first duck".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT,
@@ -77,7 +85,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         );
 
         zooKeeper.create(
-                "/mouse-znode",
+                MOUSE_PATH,
                 "I may be the first mouse".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT,
@@ -86,7 +94,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
         );
 
         zooKeeper.create(
-                "/pig-znode/baby-pig",
+                BABY_PIG_PATH,
                 "I may be the first baby pig.".getBytes(),
                 ZooDefs.Ids.OPEN_ACL_UNSAFE,
                 CreateMode.PERSISTENT,
@@ -112,7 +120,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步读取子节点列表开始");
 
-        zooKeeper.getChildren("/pig-znode", true, new ZkChildren2Callback(), "异步读取 /pig-znode 下子节点列表");
+        zooKeeper.getChildren(PIG_PATH, true, new ZkChildren2Callback(), "异步读取 " + PIG_PATH + " 下子节点列表");
 
         CommonUtil.getConnectedSemaphore().await();
 
@@ -132,7 +140,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步读取节点信息开始");
 
-        zooKeeper.getData("/pig-znode", true, new ZkDataCallback(), "异步读取 /pig-znode 节点信息");
+        zooKeeper.getData(PIG_PATH, true, new ZkDataCallback(), "异步读取 " + PIG_PATH + " 节点信息");
 
         CommonUtil.getConnectedSemaphore().await();
 
@@ -142,7 +150,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         CommonUtil.refreshConnectedSemaphore();
 
-        zooKeeper.setData("/pig-znode", "Now my name is George.".getBytes(), -1, new ZkStatCallback(), "异步更新 /pig-znode 节点信息");
+        zooKeeper.setData(PIG_PATH, "Now my name is George.".getBytes(), -1, new ZkStatCallback(), "异步更新 " + PIG_PATH + " 节点信息");
 
         CommonUtil.getConnectedSemaphore().await();
 
@@ -152,7 +160,7 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步读取节点信息开始");
 
-        zooKeeper.getData("/pig-znode", true, new ZkDataCallback(), "异步读取 /pig-znode 节点信息");
+        zooKeeper.getData(PIG_PATH, true, new ZkDataCallback(), "异步读取 " + PIG_PATH + " 节点信息");
 
         CommonUtil.getConnectedSemaphore().await();
 
@@ -172,10 +180,10 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步删除节点开始");
 
-        zooKeeper.delete("/pig-znode/baby-pig", 0, new ZkVoidCallback(), "删除 /pig-znode/baby-pig 节点");
-        zooKeeper.delete("/pig-znode", 1, new ZkVoidCallback(), "删除 /pig-znode 节点");
-        zooKeeper.delete("/duck-znode", 0, new ZkVoidCallback(), "删除 /duck-znode 节点");
-        zooKeeper.delete("/mouse-znode", 0, new ZkVoidCallback(), "删除 /mouse-znode 节点");
+        zooKeeper.delete(BABY_PIG_PATH, 0, new ZkVoidCallback(), "删除 " + BABY_PIG_PATH + " 节点");
+        zooKeeper.delete(PIG_PATH, 1, new ZkVoidCallback(), "删除 " + PIG_PATH + " 节点");
+        zooKeeper.delete(DUCK_PATH, 0, new ZkVoidCallback(), "删除 " + DUCK_PATH + " 节点");
+        zooKeeper.delete(MOUSE_PATH, 0, new ZkVoidCallback(), "删除 " + MOUSE_PATH + " 节点");
 
         CommonUtil.getConnectedSemaphore().await();
 
@@ -185,10 +193,10 @@ public class ZkNodeAsyncOperationTest extends ZkRootTest {
 
         logger.info("异步检测节点是否删除成功开始");
 
-        zooKeeper.exists("/pig-znode/baby-pig", true, new ZkStatCallback(), "/pig-znode/baby-pig");
-        zooKeeper.exists("/pig-znode", true, new ZkStatCallback(), "/pig-znode");
-        zooKeeper.exists("/duck-znode", true, new ZkStatCallback(), "/duck-znode");
-        zooKeeper.exists("/mouse-znode", true, new ZkStatCallback(), "/mouse-znode");
+        zooKeeper.exists(BABY_PIG_PATH, true, new ZkStatCallback(), BABY_PIG_PATH);
+        zooKeeper.exists(PIG_PATH, true, new ZkStatCallback(), PIG_PATH);
+        zooKeeper.exists(DUCK_PATH, true, new ZkStatCallback(), DUCK_PATH);
+        zooKeeper.exists(MOUSE_PATH, true, new ZkStatCallback(), MOUSE_PATH);
 
         CommonUtil.getConnectedSemaphore().await();
 
