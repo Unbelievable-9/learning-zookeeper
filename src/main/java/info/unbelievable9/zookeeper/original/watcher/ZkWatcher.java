@@ -41,7 +41,7 @@ public class ZkWatcher implements Watcher {
         } else {
             CommonUtil.getConnectedSemaphore().countDown();
 
-            logger.error("Zookeeper 连接失败: " + watchedEvent.getState().toString());
+            logger.error("ZooKeeper 连接失败: " + watchedEvent.getState().toString());
         }
     }
 }
