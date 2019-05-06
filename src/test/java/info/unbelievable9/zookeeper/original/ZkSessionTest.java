@@ -16,9 +16,9 @@ import java.io.IOException;
  * @author : unbelievable9
  * @date : 2019-04-24
  */
-public class ZkConnectionTest extends ZkRootTest {
+public class ZkSessionTest extends ZkRootTest {
 
-    private static final Logger logger = Logger.getLogger(ZkConnectionTest.class);
+    private static final Logger logger = Logger.getLogger(ZkSessionTest.class);
 
     private long sessionId = 0L;
 
