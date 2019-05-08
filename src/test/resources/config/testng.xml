@@ -1,13 +1,13 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 <suite name="TestAll">
 
-    <test name="session" enabled="false">
+    <test name="original-session-test" enabled="false">
         <classes>
             <class name="info.unbelievable9.zookeeper.original.ZkSessionTest"/>
         </classes>
     </test>
 
-    <test name="sync-async" enabled="false">
+    <test name="original-sync-async-test" enabled="false">
         <groups>
             <run>
                 <include name="node-operation-async"/>
@@ -20,9 +20,15 @@
         </classes>
     </test>
 
-    <test name="acl">
+    <test name="original-acl-test" enabled="false">
         <classes>
             <class name="info.unbelievable9.zookeeper.original.ZkAclTest"/>
+        </classes>
+    </test>
+
+    <test name="zkclient-session-test" enabled="true">
+        <classes>
+            <class name="info.unbelievable9.zookeeper.zkclient.ZkClientTest"/>
         </classes>
     </test>
 
