@@ -30,8 +30,8 @@ public class ZkSessionTest extends ZkRootTest {
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    @Test
-    public void connect() throws IOException, InterruptedException {
+    @Test(priority = 1)
+    public void sampleSessionTest() throws IOException, InterruptedException {
         Assert.assertNotNull(properties);
 
         String connectString = properties.getProperty("zookeeper.server3.url")
@@ -63,8 +63,8 @@ public class ZkSessionTest extends ZkRootTest {
      * @throws IOException          IO异常
      * @throws InterruptedException 中断异常
      */
-    @Test
-    public void connectWithSession() throws IOException, InterruptedException {
+    @Test(priority = 2)
+    public void sessionTest() throws IOException, InterruptedException {
         Assert.assertNotNull(properties);
 
         String connectString = properties.getProperty("zookeeper.server3.url")
