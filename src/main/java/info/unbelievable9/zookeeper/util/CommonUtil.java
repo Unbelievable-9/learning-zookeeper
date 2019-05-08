@@ -21,6 +21,31 @@ public class CommonUtil {
     private static CountDownLatch connectedSemaphore;
 
     /**
+     * 获取计数器
+     *
+     * @return 倒数计数器对象
+     */
+    public static CountDownLatch getConnectedSemaphore() {
+        return connectedSemaphore;
+    }
+
+    /**
+     * 刷新计数器
+     */
+    public static void refreshConnectedSemaphore() {
+        connectedSemaphore = new CountDownLatch(1);
+    }
+
+    /**
+     * 设置计数器
+     *
+     * @param count 计数值
+     */
+    public static void setConnectedSemaphore(int count) {
+        connectedSemaphore = new CountDownLatch(count);
+    }
+
+    /**
      * 获取 ZooKeeper配置文件
      *
      * @return 配置问文件对象
@@ -75,30 +100,5 @@ public class CommonUtil {
         }
 
         return null;
-    }
-
-    /**
-     * 获取计数器
-     *
-     * @return 倒数计数器对象
-     */
-    public static CountDownLatch getConnectedSemaphore() {
-        return connectedSemaphore;
-    }
-
-    /**
-     * 刷新计数器
-     */
-    public static void refreshConnectedSemaphore() {
-        connectedSemaphore = new CountDownLatch(1);
-    }
-
-    /**
-     * 设置计数器
-     *
-     * @param count 计数值
-     */
-    public static void setConnectedSemaphore(int count) {
-        connectedSemaphore = new CountDownLatch(count);
     }
 }
