@@ -64,6 +64,9 @@ public class ZkAclTest extends ZkRootTest {
         }
     }
 
+    /**
+     * 简单权限测试
+     */
     @Test(priority = 1)
     public void sampleAuthTest() {
         zooKeeperOne.addAuthInfo("digest", "jack:cool".getBytes());
@@ -84,6 +87,9 @@ public class ZkAclTest extends ZkRootTest {
         }
     }
 
+    /**
+     * 权限测试
+     */
     @Test(priority = 2)
     public void authTest() {
         try {
@@ -113,6 +119,9 @@ public class ZkAclTest extends ZkRootTest {
         }
     }
 
+    /**
+     * 删除节点操作权测试
+     */
     @Test(priority = 3)
     public void deleteAuthTest() {
         try {
@@ -131,7 +140,7 @@ public class ZkAclTest extends ZkRootTest {
 
             logger.info("ZooKeeperThree 成功删除节点: " + SOPHIA_PATH);
 
-            // ZooKeeperFour 并没有权限 但是因为子节点 /sophia 已经被有权限的 ZookeeperTwo 删除 所以 /eden 可被删除 (ZooKeeper 的为什么这么设计?)
+            // ZooKeeperFour 并没有权限 但是因为子节点 /sophia 已经被有权限的 ZookeeperTwo 删除 所以 /eden 可被删除 (ZooKeeper 为什么这么设计?)
             zooKeeperFour.delete(EDEN_PATH, -1);
 
             logger.info("ZooKeeperFour 成功删除节点: " + EDEN_PATH);

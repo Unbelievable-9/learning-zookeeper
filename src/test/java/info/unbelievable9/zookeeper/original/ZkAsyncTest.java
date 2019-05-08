@@ -114,6 +114,7 @@ public class ZkAsyncTest extends ZkRootTest {
      */
     @Test(priority = 2)
     public void getChildrenNodeAsynchronously() throws InterruptedException {
+        
         Assert.assertNotNull(zooKeeper);
 
         CommonUtil.refreshConnectedSemaphore();

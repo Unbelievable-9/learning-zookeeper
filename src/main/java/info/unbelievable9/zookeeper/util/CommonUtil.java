@@ -78,7 +78,7 @@ public class CommonUtil {
     }
 
     /**
-     * 获取倒数计数器
+     * 获取计数器
      *
      * @return 倒数计数器对象
      */
@@ -86,10 +86,18 @@ public class CommonUtil {
         return connectedSemaphore;
     }
 
+    /**
+     * 刷新计数器
+     */
     public static void refreshConnectedSemaphore() {
         connectedSemaphore = new CountDownLatch(1);
     }
 
+    /**
+     * 设置计数器
+     *
+     * @param count 计数值
+     */
     public static void setConnectedSemaphore(int count) {
         connectedSemaphore = new CountDownLatch(count);
     }
