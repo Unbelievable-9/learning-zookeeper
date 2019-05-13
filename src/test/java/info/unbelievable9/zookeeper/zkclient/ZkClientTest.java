@@ -6,6 +6,7 @@ import org.I0Itec.zkclient.IZkDataListener;
 import org.I0Itec.zkclient.ZkClient;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -27,6 +28,16 @@ public class ZkClientTest extends ZkRootTest {
     private static final String DUCK_PATH = ZOO_PATH + "/duck";
 
     private ZkClient zkClient;
+
+    @AfterTest
+    @Override
+    public void afterTest() throws InterruptedException {
+        super.afterTest();
+
+        if (zkClient != null) {
+            zkClient.close();
+        }
+    }
 
     /**
      * 简单连接测试
