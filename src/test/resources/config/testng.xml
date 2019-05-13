@@ -26,9 +26,15 @@
         </classes>
     </test>
 
-    <test name="zkclient-session-test" enabled="true">
+    <test name="zkclient-test" enabled="false">
         <classes>
             <class name="info.unbelievable9.zookeeper.zkclient.ZkClientTest"/>
+        </classes>
+    </test>
+    
+    <test name="curator-test" enabled="true">
+        <classes>
+            <class name="info.unbelievable9.zookeeper.curator.CuratorTest"/>
         </classes>
     </test>
 
