@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 /**
+ * 第三方客户端 ZkClient 测试
+ *
  * @author : unbelievable9
  * @date : 2019-05-08
  */
@@ -37,13 +39,16 @@ public class ZkClientTest extends ZkRootTest {
                 + ":"
                 + properties.get("zookeeper.server3.port");
 
-        zkClient = new ZkClient(serverString, 5000, 2000);
+        zkClient = new ZkClient(serverString, 60000, 15000);
 
         Assert.assertNotNull(zkClient);
 
-        logger.info("ZooKeeper 会话已建立");
+        logger.info("会话已建立");
     }
 
+    /**
+     * 简单创建节点测试
+     */
     @Test(priority = 2)
     public void sampleCreateNodeTest() {
         Assert.assertNotNull(zkClient);
@@ -55,6 +60,9 @@ public class ZkClientTest extends ZkRootTest {
         logger.info("递归创建节点成功");
     }
 
+    /**
+     * 简单删除节点测试
+     */
     @Test(priority = 3)
     public void sampleDeteteNodeTest() {
         Assert.assertNotNull(zkClient);
@@ -66,8 +74,13 @@ public class ZkClientTest extends ZkRootTest {
         logger.info("逐层删除节点成功");
     }
 
+    /**
+     * 节点操作测试
+     *
+     * @throws InterruptedException 中断异常
+     */
     @Test(priority = 4)
-    public void sampleNodeOperationTest() throws InterruptedException {
+    public void nodeOperationTest() throws InterruptedException {
         Assert.assertNotNull(zkClient);
 
         zkClient.subscribeChildChanges(ZOO_PATH, new IZkChildListener() {
