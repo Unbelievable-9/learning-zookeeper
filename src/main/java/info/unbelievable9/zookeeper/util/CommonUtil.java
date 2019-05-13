@@ -91,7 +91,7 @@ public class CommonUtil {
 
             ZooKeeper zooKeeper = new ZooKeeper(
                     connectString,
-                    5000,
+                    60000,
                     new ZkWatcher());
 
             getConnectedSemaphore().await();
