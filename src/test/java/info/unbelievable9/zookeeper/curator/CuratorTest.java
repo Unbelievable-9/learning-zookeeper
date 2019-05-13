@@ -8,6 +8,7 @@ import org.apache.curator.framework.imps.CuratorFrameworkState;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
 
 /**
@@ -21,6 +22,16 @@ public class CuratorTest extends ZkRootTest {
     private static final Logger logger = Logger.getLogger(CuratorTest.class);
 
     private CuratorFramework client;
+
+    @AfterTest
+    @Override
+    public void afterTest() throws InterruptedException {
+        super.afterTest();
+
+        if (client != null && !client.getState().equals(CuratorFrameworkState.STOPPED)) {
+            client.close();
+        }
+    }
 
     /**
      * 简单会话建立测试
@@ -41,5 +52,32 @@ public class CuratorTest extends ZkRootTest {
         Assert.assertEquals(client.getState(), CuratorFrameworkState.STARTED);
 
         logger.info("会话建立已开始");
+
+        client.close();
+    }
+
+    @Test(priority = 2)
+    public void fluentSessionTest() {
+        Assert.assertNotNull(properties);
+
+        String connectString = properties.getProperty("zookeeper.server3.url")
+                + ":"
+                + properties.get("zookeeper.server3.port");
+
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+
+        client = CuratorFrameworkFactory.builder()
+                .connectString(connectString)
+                .sessionTimeoutMs(5000)
+                .retryPolicy(retryPolicy)
+                .build();
+
+        client.start();
+
+        Assert.assertEquals(client.getState(), CuratorFrameworkState.STARTED);
+
+        logger.info("会话建立已开始");
+
+        client.close();
     }
 }
