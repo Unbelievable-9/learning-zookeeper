@@ -10,7 +10,7 @@
     <test name="original-sync-async-test" enabled="false">
         <groups>
             <run>
-                <include name="node-operation-async"/>
+                <include name="node-operation-sync"/>
             </run>
         </groups>
 
@@ -34,7 +34,7 @@
     
     <test name="curator-test" enabled="true">
         <classes>
-            <class name="info.unbelievable9.zookeeper.curator.CuratorTest"/>
+            <class name="info.unbelievable9.zookeeper.curator.CuratorSyncTest"/>
         </classes>
     </test>
 
