@@ -57,7 +57,7 @@ public class ZkSyncTest extends ZkRootTest {
      * 同步创建节点
      */
     @Test(priority = 1)
-    public void createZNodeSynchronously() {
+    public void createNodeTest() {
         Assert.assertNotNull(zooKeeper);
 
         String firstPath = null;
@@ -118,7 +118,7 @@ public class ZkSyncTest extends ZkRootTest {
      * 同步读取子节点列表信息
      */
     @Test(priority = 2)
-    public void getChildrenNodeSynchronously() {
+    public void getChildNodeTest() {
         Assert.assertNotNull(zooKeeper);
 
         try {
@@ -134,7 +134,7 @@ public class ZkSyncTest extends ZkRootTest {
      * 同步读取并更新节点信息
      */
     @Test(priority = 3)
-    public void getAndUpdateNodeDataSynchronously() {
+    public void updateNodeDataTest() {
         Assert.assertNotNull(zooKeeper);
 
         try {
@@ -173,7 +173,7 @@ public class ZkSyncTest extends ZkRootTest {
      * 同步删除节点并检测节点是否删除成功
      */
     @Test(priority = 4)
-    public void deleteZNodeSynchronously() {
+    public void deleteNodeTest() {
         Assert.assertNotNull(zooKeeper);
 
         Stat stat;

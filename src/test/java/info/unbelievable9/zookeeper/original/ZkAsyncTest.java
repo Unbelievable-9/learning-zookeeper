@@ -59,7 +59,7 @@ public class ZkAsyncTest extends ZkRootTest {
      * @throws InterruptedException 中断异常
      */
     @Test(priority = 1)
-    public void createZNodeAsynchronously() throws InterruptedException {
+    public void createNodeTest() throws InterruptedException {
         Assert.assertNotNull(zooKeeper);
 
         CommonUtil.setConnectedSemaphore(4);
@@ -113,7 +113,7 @@ public class ZkAsyncTest extends ZkRootTest {
      * @throws InterruptedException 中断异常
      */
     @Test(priority = 2)
-    public void getChildrenNodeAsynchronously() throws InterruptedException {
+    public void getChildNodeTest() throws InterruptedException {
         
         Assert.assertNotNull(zooKeeper);
 
@@ -134,7 +134,7 @@ public class ZkAsyncTest extends ZkRootTest {
      * @throws InterruptedException 中断异常
      */
     @Test(priority = 3)
-    public void getAndUpdateNodeAsynchronously() throws InterruptedException {
+    public void updateNodeTest() throws InterruptedException {
         Assert.assertNotNull(zooKeeper);
 
         CommonUtil.refreshConnectedSemaphore();
@@ -174,7 +174,7 @@ public class ZkAsyncTest extends ZkRootTest {
      * @throws InterruptedException 中断异常
      */
     @Test(priority = 4)
-    public void deleteZNodeAsynchronously() throws InterruptedException {
+    public void deleteNodeTest() throws InterruptedException {
         Assert.assertNotNull(zooKeeper);
 
         CommonUtil.setConnectedSemaphore(4);
