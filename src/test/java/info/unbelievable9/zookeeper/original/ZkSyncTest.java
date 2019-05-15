@@ -41,6 +41,8 @@ public class ZkSyncTest extends ZkRootTest {
         super.beforeTest();
 
         zooKeeper = CommonUtil.getZooKeeper();
+
+        Assert.assertNotNull(zooKeeper);
     }
 
     @AfterTest
@@ -58,8 +60,6 @@ public class ZkSyncTest extends ZkRootTest {
      */
     @Test(priority = 1)
     public void createNodeTest() {
-        Assert.assertNotNull(zooKeeper);
-
         String firstPath = null;
         String secondPath = null;
         String childPath = null;
@@ -119,8 +119,6 @@ public class ZkSyncTest extends ZkRootTest {
      */
     @Test(priority = 2)
     public void getChildNodeTest() {
-        Assert.assertNotNull(zooKeeper);
-
         try {
             List<String> childrenList = zooKeeper.getChildren(SHEEP_PATH, true);
             logger.info("同步获取 " + SHEEP_PATH + " 子节点列表: " + childrenList);
@@ -135,13 +133,11 @@ public class ZkSyncTest extends ZkRootTest {
      */
     @Test(priority = 3)
     public void updateNodeDataTest() {
-        Assert.assertNotNull(zooKeeper);
-
         try {
             Stat stat = new Stat();
             byte[] data = zooKeeper.getData(SHEEP_PATH, true, stat);
 
-            logger.info("节点信息: " +  new String(data));
+            logger.info("节点信息: " + new String(data));
             logger.info("节点详情: [" +
                     "czxid:" + stat.getCzxid() + ", " +
                     "mzxid:" + stat.getMzxid() + ", " +
@@ -158,7 +154,7 @@ public class ZkSyncTest extends ZkRootTest {
             stat = new Stat();
             data = zooKeeper.getData(SHEEP_PATH, true, stat);
 
-            logger.info("节点信息: " +  new String(data));
+            logger.info("节点信息: " + new String(data));
             logger.info("节点详情: [" +
                     "czxid:" + stat.getCzxid() + ", " +
                     "mzxid:" + stat.getMzxid() + ", " +
@@ -174,8 +170,6 @@ public class ZkSyncTest extends ZkRootTest {
      */
     @Test(priority = 4)
     public void deleteNodeTest() {
-        Assert.assertNotNull(zooKeeper);
-
         Stat stat;
 
         try {

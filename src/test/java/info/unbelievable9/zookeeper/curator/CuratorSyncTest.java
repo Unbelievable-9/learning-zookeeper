@@ -1,11 +1,9 @@
 package info.unbelievable9.zookeeper.curator;
 
 import info.unbelievable9.zookeeper.ZkRootTest;
-import org.apache.curator.RetryPolicy;
+import info.unbelievable9.zookeeper.util.CommonUtil;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
@@ -42,26 +40,9 @@ public class CuratorSyncTest extends ZkRootTest {
     public void beforeTest() throws IOException, InterruptedException {
         super.beforeTest();
 
-        Assert.assertNotNull(properties);
+        client = CommonUtil.getCurator(NAMESPACE);
 
-        String connectString = properties.getProperty("zookeeper.server3.url")
-                + ":"
-                + properties.get("zookeeper.server3.port");
-
-        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
-
-        client = CuratorFrameworkFactory.builder()
-                .connectString(connectString)
-                .sessionTimeoutMs(5000)
-                .retryPolicy(retryPolicy)
-                .namespace(NAMESPACE)
-                .build();
-
-        client.start();
-
-        Assert.assertEquals(client.getState(), CuratorFrameworkState.STARTED);
-
-        logger.info("会话已建立");
+        Assert.assertNotNull(client);
     }
 
     @AfterTest

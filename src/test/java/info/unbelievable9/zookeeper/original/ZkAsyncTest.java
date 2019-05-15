@@ -41,6 +41,8 @@ public class ZkAsyncTest extends ZkRootTest {
         super.beforeTest();
 
         zooKeeper = CommonUtil.getZooKeeper();
+
+        Assert.assertNotNull(zooKeeper);
     }
 
     @AfterTest
@@ -60,8 +62,6 @@ public class ZkAsyncTest extends ZkRootTest {
      */
     @Test(priority = 1)
     public void createNodeTest() throws InterruptedException {
-        Assert.assertNotNull(zooKeeper);
-
         CommonUtil.setConnectedSemaphore(4);
 
         logger.info("异步创建节点开始");
@@ -114,9 +114,6 @@ public class ZkAsyncTest extends ZkRootTest {
      */
     @Test(priority = 2)
     public void getChildNodeTest() throws InterruptedException {
-        
-        Assert.assertNotNull(zooKeeper);
-
         CommonUtil.refreshConnectedSemaphore();
 
         logger.info("异步读取子节点列表开始");
@@ -135,8 +132,6 @@ public class ZkAsyncTest extends ZkRootTest {
      */
     @Test(priority = 3)
     public void updateNodeTest() throws InterruptedException {
-        Assert.assertNotNull(zooKeeper);
-
         CommonUtil.refreshConnectedSemaphore();
 
         logger.info("异步读取节点信息开始");
@@ -175,8 +170,6 @@ public class ZkAsyncTest extends ZkRootTest {
      */
     @Test(priority = 4)
     public void deleteNodeTest() throws InterruptedException {
-        Assert.assertNotNull(zooKeeper);
-
         CommonUtil.setConnectedSemaphore(4);
 
         logger.info("异步删除节点开始");

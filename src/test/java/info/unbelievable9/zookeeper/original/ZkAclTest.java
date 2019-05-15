@@ -40,6 +40,11 @@ public class ZkAclTest extends ZkRootTest {
         zooKeeperTwo = CommonUtil.getZooKeeper();
         zooKeeperThree = CommonUtil.getZooKeeper();
         zooKeeperFour = CommonUtil.getZooKeeper();
+
+        Assert.assertNotNull(zooKeeperOne);
+        Assert.assertNotNull(zooKeeperTwo);
+        Assert.assertNotNull(zooKeeperThree);
+        Assert.assertNotNull(zooKeeperFour);
     }
 
     @AfterTest

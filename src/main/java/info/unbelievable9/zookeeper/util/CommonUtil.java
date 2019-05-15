@@ -1,6 +1,11 @@
 package info.unbelievable9.zookeeper.util;
 
 import info.unbelievable9.zookeeper.original.watcher.ZkWatcher;
+import org.I0Itec.zkclient.ZkClient;
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.log4j.Logger;
 import org.apache.zookeeper.ZooKeeper;
 
@@ -96,7 +101,64 @@ public class CommonUtil {
 
             getConnectedSemaphore().await();
 
+            logger.info("会话已建立");
+
             return zooKeeper;
+        }
+
+        return null;
+    }
+
+    public static ZkClient getZkClient() {
+        Properties properties = getProperties();
+
+        if (properties != null) {
+            String serverString = properties.getProperty("zookeeper.server3.url")
+                    + ":"
+                    + properties.get("zookeeper.server3.port");
+
+            ZkClient zkClient = new ZkClient(serverString, 60000, 15000);
+
+            logger.info("会话已建立");
+
+            return zkClient;
+        }
+
+        return null;
+    }
+
+    public static CuratorFramework getCurator(String namespace) {
+        Properties properties = getProperties();
+
+        if (properties != null) {
+            String connectString = properties.getProperty("zookeeper.server3.url")
+                    + ":"
+                    + properties.get("zookeeper.server3.port");
+
+            RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
+
+            CuratorFramework client;
+
+            if (namespace == null) {
+                client = CuratorFrameworkFactory.builder()
+                        .connectString(connectString)
+                        .sessionTimeoutMs(5000)
+                        .retryPolicy(retryPolicy)
+                        .build();
+            } else {
+                client = CuratorFrameworkFactory.builder()
+                        .connectString(connectString)
+                        .sessionTimeoutMs(5000)
+                        .retryPolicy(retryPolicy)
+                        .namespace(namespace)
+                        .build();
+            }
+
+            client.start();
+
+            logger.info("会话已建立");
+
+            return client;
         }
 
         return null;
